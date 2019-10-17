@@ -41,7 +41,7 @@ class UpdatePet extends Component {
     const gender = form.gender.value;
     const spayed = form.spayed.value;
     const { ownerID } = this.props;
-    const petId =  this.props.activePet.id;
+    const petId = this.props.activePet.id;
     const petProfile = {
       name,
       type,
@@ -49,7 +49,7 @@ class UpdatePet extends Component {
       gender,
       spayed,
       ownerID,
-      petId,
+      petId
     };
 
     fetch('/pets/', {
@@ -62,6 +62,8 @@ class UpdatePet extends Component {
       .then(response => response.json())
       .then(petObj => {
         console.log('pet obj in react PUT fetch request was', petObj);
+        this.props.updatePet(petObj);
+        this.props.changeDBPage('home');
       })
       .catch(err => console.log(err));
   }
@@ -175,11 +177,7 @@ class UpdatePet extends Component {
                 Spayed/Neutered?
                 <input type="text" name="spayed" id="pet-spayed-input" />
               </label>
-              <input 
-              type="submit" 
-              value="Adjust Pet Details" 
-              onClick={this.updatePet}
-               />
+              <input type="submit" value="Adjust Pet Details" onClick={this.updatePet} />
             </form>
           </div>
         </section>

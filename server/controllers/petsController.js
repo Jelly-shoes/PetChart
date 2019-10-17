@@ -57,6 +57,10 @@ petsController.addPet = (req, res, next) => {
     // if vetID exist then we query normally otherwise we query without the vet_id column added
     const addPet = vetID ? petQuery.addPet : petQuery.addPetWithoutVet;
     const petData = vetID ? [name, type, gender, spayed, birthYear, ownerID, vetID] : [name, type, gender, spayed, birthYear, ownerID];
+    
+    console.log('req.body.pet in GET petsController is', req.body.pet)
+    console.log('petdata in GET petsController is', petData)
+
     db.connect((err, client, release) => {
       console.log('ERROR: ', err);
       client.query(addPet, petData)
@@ -78,6 +82,54 @@ petsController.addPet = (req, res, next) => {
     });
   }
 };
+
+petsController.adjustPet = (req, res, next) => {
+  console.log('\n*********** petsController.ADJUSTPet ****************', `\nMETHOD: ${req.method} \nENDPOINT: '${req.url}' \nBODY: ${JSON.stringify(req.body)} \nLOCALS: ${JSON.stringify(res.locals)} `);
+  const { name, type, gender, spayed, birthYear, ownerID } = req.body.pet;
+  const petData = [name, type, gender, spayed, birthYear, ownerID];
+
+  console.log('req.body.pet in PUT petsController is', req.body.pet)
+  console.log('petdata in PUT petsController is', petData)
+
+  // write query to execute
+  const queryStr = `
+  UPDATE pets
+  SET
+  name = '${petData[0]}',
+  type = '${petData[1]}',
+  gender = '${petData[2]}',
+  spayed = '${petData[3]}',
+  birth_year = '${petData[4]}',
+  owner_id = ${petData[5]}
+  WHERE owner_id = ${petData[5]}`;
+  // need to include pet_id in WHERE, so we don't update all pets
+  // will also need this in order to pass info as reponse back to front
+
+  console.log('querystring in petsController is', queryStr);
+
+  if (req.body.pet) {
+    db.connect((err, client, release) => {
+      client.query(queryStr)
+        .then((adjPet) => {
+          release();
+          // successful query
+          console.log('PUT query was successful', adjPet);
+          const {
+            pet_id, name, type, gender, spayed, birth_year, owner_id
+          } = adjPet.rows[0];
+
+          res.locals.adjPet = {
+            id: pet_id, name, type, gender, spayed, birthYear: birth_year, ownerID: owner_id,
+          };
+          return next();
+        })
+        .catch((petQueryErr) => {
+          console.log('petQUERYERROR: ', petQueryErr);
+          next(petQueryErr);
+        });
+    });
+  }
+}
 
 /**
  * @description deletes single pet from pets table

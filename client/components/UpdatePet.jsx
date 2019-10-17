@@ -24,14 +24,15 @@ class UpdatePet extends Component {
     // this.addVisit = this.addVisit.bind(this);
     // this.addVaccine = this.addVaccine.bind(this);
     // this.addSurgery = this.addSurgery.bind(this);
-    this.savePet = this.props.savePet.bind(this);
-    this.updatePet = this.props.updatePet.bind(this);
+    this.updatePet = this.updatePet.bind(this);
   }
 
   // grab updated/newly added pet details
   // POST/PATCH to server
   // dispatch savePet action with response
-  updatePetDetails(event) {
+  updatePet(event) {
+    console.log('state in updatepet react is', this.state);
+    console.log('props in updatepetreact is', this.props);
     event.preventDefault();
     const form = document.querySelector('.pet-profile-details-form');
     const name = form.name.value;
@@ -40,16 +41,18 @@ class UpdatePet extends Component {
     const gender = form.gender.value;
     const spayed = form.spayed.value;
     const { ownerID } = this.props;
+    const petId =  this.props.activePet.id;
     const petProfile = {
       name,
       type,
       birthYear,
       gender,
       spayed,
-      ownerID
+      ownerID,
+      petId,
     };
 
-    fetch('/update/', {
+    fetch('/pets/', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -57,9 +60,8 @@ class UpdatePet extends Component {
       body: JSON.stringify({ pet: petProfile })
     })
       .then(response => response.json())
-      .then(petObject => {
-        console.log('WHAT ARE ARE WE GETTING BACK FROM DB ON CREATE?', petObject);
-        this.savePet(petObject);
+      .then(petObj => {
+        console.log('pet obj in react PUT fetch request was', petObj);
       })
       .catch(err => console.log(err));
   }
@@ -173,7 +175,11 @@ class UpdatePet extends Component {
                 Spayed/Neutered?
                 <input type="text" name="spayed" id="pet-spayed-input" />
               </label>
-              <input type="submit" value="Save Pet Details" onClick={this.updatePetDetails} />
+              <input 
+              type="submit" 
+              value="Adjust Pet Details" 
+              onClick={this.updatePet}
+               />
             </form>
           </div>
         </section>

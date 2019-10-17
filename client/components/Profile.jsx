@@ -29,9 +29,11 @@ class Profile extends Component {
     this.savePet = this.props.savePet.bind(this);
     this.deletePet = this.deletePet.bind(this);
     this.changeDBPage = this.props.changeDBPage.bind(this);
+    // this.adjustPet = this.adjustPet.bind(this);
     this.createPDF = this.createPDF.bind(this);
   }
 
+  // NOTE: WE THINK THIS IS USED TO *ADD* PETS, NOT UPDATE THEM!
   // grab updated/newly added pet details
   // POST/PATCH to server
   // dispatch savePet action with response
@@ -165,6 +167,32 @@ class Profile extends Component {
       .catch(err => console.log(err));
   }
 
+  // adjustPet() {
+  //   console.log('adjust pet fired in react component');
+
+  //   const { ownerID } = this.props;
+  //   const petProfile = {
+  //     name: 'rover', // name,
+  //     type: 'lab', // type,
+  //     birthYear: '1993', // birthYear,
+  //     gender: 'm', // gender,
+  //     spayed: 'y', // spayed,
+  //     ownerID, // ownerID,
+  //   };
+
+  //   fetch('/pets/', {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ pet: petProfile }),
+  //   })
+  //   .then((response) => response.json())
+  //   .then((petObj) => {
+  //     console.log('pet obj in react PUT fetch request was', petObj);
+  //   })
+  // }
+
   render() {
     console.log(this.props);
     const { activePet } = this.props;
@@ -191,13 +219,6 @@ class Profile extends Component {
       }
     }
 
-    // handleDelete(id){
-    //   fetch('/pets/deletePet', {
-    //     method: 'DELETE',
-    //     body: JSON.stringify(id)
-    //   })
-    // }
-
     return (
       <div className="profile-container" id="pet-profile">
         <section className="profile-header">
@@ -206,6 +227,7 @@ class Profile extends Component {
               <img src="/build/images/dog.png" alt="pet profile pic" />
               <h1>{activePet.name}</h1>
             </div>
+            // redirects to update page
             <input
               type="submit"
               value="Update Pet Details"
@@ -213,6 +235,14 @@ class Profile extends Component {
                 this.changeDBPage('update', activePet);
               }}
             />
+            // use to submit update info
+            {/* <input 
+              type="submit" 
+              value="Adjust Pet Details" 
+              onClick={() => {
+                this.adjustPet();
+              }}
+              /> */}
             <input
               type="submit"
               value="Remove Pet Data"

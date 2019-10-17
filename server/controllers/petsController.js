@@ -85,11 +85,11 @@ petsController.addPet = (req, res, next) => {
 
 petsController.adjustPet = (req, res, next) => {
   console.log('\n*********** petsController.ADJUSTPet ****************', `\nMETHOD: ${req.method} \nENDPOINT: '${req.url}' \nBODY: ${JSON.stringify(req.body)} \nLOCALS: ${JSON.stringify(res.locals)} `);
-  const { name, type, gender, spayed, birthYear, ownerID } = req.body.pet;
-  const petData = [name, type, gender, spayed, birthYear, ownerID];
+  const { name, type, gender, spayed, birthYear, ownerID, petId } = req.body.pet;
+  const petData = [name, type, gender, spayed, birthYear, ownerID, petId];
 
-  console.log('req.body.pet in PUT petsController is', req.body.pet)
-  console.log('petdata in PUT petsController is', petData)
+  console.log('req.body.pet in PUT petsController is', req.body.pet);
+  console.log('petdata in PUT petsController is', petData);
 
   // write query to execute
   const queryStr = `
@@ -101,7 +101,8 @@ petsController.adjustPet = (req, res, next) => {
   spayed = '${petData[3]}',
   birth_year = '${petData[4]}',
   owner_id = ${petData[5]}
-  WHERE owner_id = ${petData[5]}`;
+  WHERE owner_id = ${petData[5]} AND pet_id = ${petData[6]}
+  RETURNING *`;
   // need to include pet_id in WHERE, so we don't update all pets
   // will also need this in order to pass info as reponse back to front
 

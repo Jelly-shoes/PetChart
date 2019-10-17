@@ -117,7 +117,7 @@ class MainContainer extends Component {
         );
       case 'dashboard':
         return (
-          <Dashboard />
+          <Dashboard id='Dashboard'/>
         );
       case 'signup':
         return (

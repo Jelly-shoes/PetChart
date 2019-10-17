@@ -239,7 +239,7 @@ const appReducer = (state = initialState, action) => {
       };
     }
 
-    case types.DELETE_PET:
+    case types.DELETE_PET: {
       console.log('pet deleted: ', action.payload);
       const responsePetId = action.payload;
       const { userProfile } = state;
@@ -261,10 +261,31 @@ const appReducer = (state = initialState, action) => {
         ...state,
         userProfile
       };
+    }
 
-    case types.UPDATE_PET:
+    case types.UPDATE_PET: {
+      console.log('pet UPDATE: ', action.payload);
+      const responsePet = action.payload;
+      const { userProfile } = state;
+      // const petToRemove = {
+      //   ...emptyPet,
+      // };
+      // SPLICE OUT PETTOREMOVE FROM USERPROFILE.PETS
+      // for (let i = 0; i < userProfile.pets.length; i++) {
+      //   console.log('LOOP ELEMENT', userProfile.pets[i].id);
+      //   console.log('RES PET ID', responsePetId);
+      //   if (userProfile.pets[i].id === responsePetId) {
+      //     userProfile.pets.splice(i, 1);
+      //     break;
+      //   }
+      // }
+      console.log('pets array in reducer UPDATE: ', userProfile.pets); // make sure pet was removed successfully;
 
-    // expand
+      return {
+        ...state,
+        userProfile
+      };
+    }
 
     case types.SAVE_PROFILE:
       // alert('user profile loaded!')

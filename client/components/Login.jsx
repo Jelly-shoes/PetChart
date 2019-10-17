@@ -13,17 +13,17 @@
 import React, { Component } from 'react';
 
 // return content to render for the login page
-const Login = (props) => (
+const Login = props => (
   <div id="loginWrapper">
     {/* login form: */}
-    <form id="loginForm" onSubmit={(event) => props.saveProfile(event)}>
+    <form id="loginForm" onSubmit={event => props.saveProfile(event)}>
       <div id="loginLine1">
         <label> Email: </label>
         <input placeholder="email" type="input" id="email" />
       </div>
       <div id="loginLine2">
         <label> password: </label>
-        <input placeholder="password" type="input" id="password" />
+        <input placeholder="password" type="password" id="password" />
       </div>
 
       <div className="loginFormButtons">

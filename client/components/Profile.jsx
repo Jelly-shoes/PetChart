@@ -16,56 +16,82 @@ import React, { Component } from 'react';
 import Visit from './Visit.jsx';
 import Vaccine from './Vaccine.jsx';
 import Surgery from './Surgery.jsx';
+import JSPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 class Profile extends Component {
   constructor(props) {
     super(props);
-    this.updatePetDetails = this.updatePetDetails.bind(this);
+    // this.updatePetDetails = this.updatePetDetails.bind(this);
     this.addVisit = this.addVisit.bind(this);
     this.addVaccine = this.addVaccine.bind(this);
     this.addSurgery = this.addSurgery.bind(this);
     this.savePet = this.props.savePet.bind(this);
     this.deletePet = this.deletePet.bind(this);
     this.changeDBPage = this.props.changeDBPage.bind(this);
-    this.adjustPet = this.adjustPet.bind(this);
+    // this.adjustPet = this.adjustPet.bind(this);
+    this.createPDF = this.createPDF.bind(this);
   }
 
   // NOTE: WE THINK THIS IS USED TO *ADD* PETS, NOT UPDATE THEM!
   // grab updated/newly added pet details
   // POST/PATCH to server
   // dispatch savePet action with response
-  updatePetDetails(event) {
-    event.preventDefault();
-    const form = document.querySelector('.pet-profile-details-form');
-    const name = form.name.value;
-    const type = form.type.value;
-    const birthYear = form.birthyear.value;
-    const gender = form.gender.value;
-    const spayed = form.spayed.value;
-    const { ownerID } = this.props;
-    const petProfile = {
-      name,
-      type,
-      birthYear,
-      gender,
-      spayed,
-      ownerID,
-    };
+  // updatePetDetails(event) {
+  //   event.preventDefault();
+  //   const form = document.querySelector('.pet-profile-details-form');
+  //   const name = form.name.value;
+  //   const type = form.type.value;
+  //   const birthYear = form.birthyear.value;
+  //   const gender = form.gender.value;
+  //   const spayed = form.spayed.value;
+  //   const { ownerID } = this.props;
+  //   const petProfile = {
+  //     name,
+  //     type,
+  //     birthYear,
+  //     gender,
+  //     spayed,
+  //     ownerID,
+  //   };
 
-    fetch('/pets/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ pet: petProfile }),
-    })
-      .then((response) => response.json())
-      .then((petObject) => {
-        console.log(petObject);
-        this.savePet(petObject);
-      })
-      .catch((err) => console.log(err));
+  //   fetch('/pets/', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ pet: petProfile }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((petObject) => {
+  //       console.log(petObject);
+  //       this.savePet(petObject);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
+
+  createPDF(e) {
+    const input = document.querySelector('#pet-profile');
+    const pdf = new JSPDF();
+    if (pdf) {
+      html2canvas(input, {
+        useCORS: true
+      }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        console.log(imgData); //Maybe blank, maybe full image, maybe half of image
+        pdf.addImage(imgData, 'PNG', 5, 5);
+        pdf.save('download.pdf');
+      });
+    }
+    // const doc = new JSPDF();
+    // let myText = `pet: ${this.props.activePet.name}\nname: ${this.props.activePet.type}\nbirth year: ${this.props.activePet.birthYear}\ngender: ${this.props.activePet.gender}\nspayed/neutered? ${this.props.activePet.spayed}`;
+    // doc.text(myText, 10, 10);
+    // doc.save(`${this.props.activePet.name}-petchart.pdf`);
   }
+
+  // html2canvas(document.body).then(function(canvas) {
+  //   document.body.appendChild(canvas);
+  // });
 
   // grab visit details from form
   // PATCH to server
@@ -82,7 +108,7 @@ class Profile extends Component {
       date,
       notes,
       vet,
-      file,
+      file
     };
     return this.props.savePet(petProfile);
   }
@@ -98,7 +124,7 @@ class Profile extends Component {
     const petProfile = {
       id: this.props.activePet.id,
       date,
-      name,
+      name
     };
     return this.props.savePet(petProfile);
   }
@@ -114,7 +140,7 @@ class Profile extends Component {
     const petProfile = {
       id: this.props.activePet.id,
       date,
-      name,
+      name
     };
     return this.props.savePet(petProfile);
   }
@@ -127,45 +153,45 @@ class Profile extends Component {
     fetch('/pets/', {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ id })
     })
-      .then((response) => response.json())
-      .then((petObject) => {
+      .then(response => response.json())
+      .then(petObject => {
         console.log('petobj in react is', petObject);
         // add petObject number to redux for state update
         this.props.deletePet(petObject);
         this.changeDBPage('home');
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }
 
-  adjustPet() {
-    console.log('adjust pet fired in react component');
+  // adjustPet() {
+  //   console.log('adjust pet fired in react component');
 
-    const { ownerID } = this.props;
-    const petProfile = {
-      name: 'rover', // name,
-      type: 'lab', // type,
-      birthYear: '1993', // birthYear,
-      gender: 'm', // gender,
-      spayed: 'y', // spayed,
-      ownerID, // ownerID,
-    };
+  //   const { ownerID } = this.props;
+  //   const petProfile = {
+  //     name: 'rover', // name,
+  //     type: 'lab', // type,
+  //     birthYear: '1993', // birthYear,
+  //     gender: 'm', // gender,
+  //     spayed: 'y', // spayed,
+  //     ownerID, // ownerID,
+  //   };
 
-    fetch('/pets/', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ pet: petProfile }),
-    })
-    .then((response) => response.json())
-    .then((petObj) => {
-      console.log('pet obj in react PUT fetch request was', petObj);
-    })
-  }
+  //   fetch('/pets/', {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ pet: petProfile }),
+  //   })
+  //   .then((response) => response.json())
+  //   .then((petObj) => {
+  //     console.log('pet obj in react PUT fetch request was', petObj);
+  //   })
+  // }
 
   render() {
     console.log(this.props);
@@ -187,68 +213,62 @@ class Profile extends Component {
         }
         if (activePet.surgeries[i]) {
           surgeriesListItems.push(
-            <Surgery surgery={activePet.surgeries[i]} key={`surgery-${i}`} />,
+            <Surgery surgery={activePet.surgeries[i]} key={`surgery-${i}`} />
           );
         }
       }
     }
 
     return (
-      <div className="profile-container">
+      <div className="profile-container" id="pet-profile">
         <section className="profile-header">
           <div className="profile-header-content">
             <div className="img-name">
               <img src="/build/images/dog.png" alt="pet profile pic" />
               <h1>{activePet.name}</h1>
             </div>
-            <input 
+            // redirects to update page
+            <input
+              type="submit"
+              value="Update Pet Details"
+              onClick={() => {
+                this.changeDBPage('update', activePet);
+              }}
+            />
+            // use to submit update info
+            {/* <input 
               type="submit" 
               value="Adjust Pet Details" 
               onClick={() => {
                 this.adjustPet();
               }}
-              />
+              /> */}
             <input
               type="submit"
-              value="DELETE"
+              value="Remove Pet Data"
               onClick={() => {
                 this.deletePet(activePet.id);
               }}
             />
-
+            <input type="submit" value="Download PDF" onClick={this.createPDF} />
           </div>
 
           <div className="pet-profile-details-container">
             <form className="pet-profile-details-view">
               <label>
-                <strong>Name:</strong>
-                {' '}
-                {activePet.name}
-                ;
+                <strong>Name:</strong> {activePet.name};
               </label>
               <label>
-                <strong>Type:</strong>
-                {' '}
-                {activePet.type}
-                ;
+                <strong>Type:</strong> {activePet.type};
               </label>
               <label>
-                <strong>Birth Year:</strong>
-                {' '}
-                {activePet.birthYear}
-                ;
+                <strong>Birth Year:</strong> {activePet.birthYear};
               </label>
               <label>
-                <strong>Gender:</strong>
-                {' '}
-                $
-                {activePet.gender}
+                <strong>Gender:</strong> {activePet.gender}
               </label>
               <label>
-                <strong>Spayed/Neutered?</strong>
-                {' '}
-                {activePet.spayed}
-                ;
+                <strong>Spayed/Neutered?</strong> {activePet.spayed};
               </label>
             </form>
           </div>

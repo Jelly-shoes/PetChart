@@ -227,7 +227,7 @@ class Profile extends Component {
               <img src="/build/images/dog.png" alt="pet profile pic" />
               <h1>{activePet.name}</h1>
             </div>
-            // redirects to update page
+            {/* // redirects to update page */}
             <input
               type="submit"
               value="Update Pet Details"
@@ -235,7 +235,7 @@ class Profile extends Component {
                 this.changeDBPage('update', activePet);
               }}
             />
-            // use to submit update info
+            {/* // use to submit update info */}
             {/* <input 
               type="submit" 
               value="Adjust Pet Details" 

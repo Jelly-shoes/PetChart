@@ -4,7 +4,7 @@
   "description": "pet emr for rich people",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "NODE_ENV=production nodemon server/server.js",
     "dev": "NODE_ENV=development nodemon server/server.js & NODE_ENV=development webpack-dev-server --open",
     "build": "NODE_ENV=production webpack"
@@ -19,6 +19,9 @@
     "url": "https://github.com/PinkFairyArmadillos/PetChart/issues"
   },
   "homepage": "https://github.com/PinkFairyArmadillos/PetChart#readme",
+  "jest": {
+    "verbose": true
+  },
   "dependencies": {
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
@@ -28,6 +31,8 @@
     "express-session": "^1.13.0",
     "file-loader": "^4.2.0",
     "html-webpack-plugin": "^3.2.0",
+    "html2canvas": "^1.0.0-rc.5",
+    "jspdf": "^1.5.3",
     "node-fetch": "^2.6.0",
     "nodemon": "^1.8.1",
     "pg": "^7.12.1",
@@ -44,8 +49,12 @@
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.6.0",
+    "enzyme-to-json": "^3.3.4",
     "eslint": "^6.5.1",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.18.2",
@@ -53,7 +62,14 @@
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-react-hooks": "^1.7.0",
     "eslint-plugin-react-redux": "^3.0.1",
+    "jest": "^24.9.0",
+    "jest-cli": "^24.9.0",
+    "jest-puppeteer": "^3.4.0",
+    "puppeteer": "^1.9.0",
+    "react-addons-test-utils": "^15.6.2",
+    "react-test-renderer": "^16.5.2",
     "style-loader": "^1.0.0",
+    "supertest": "^3.3.0",
     "url-loader": "^2.2.0",
     "webpack": "^4.41.0",
     "webpack-cli": "^3.3.9",

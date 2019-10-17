@@ -19,20 +19,21 @@ import Home from '../components/Home.jsx';
 import Nav from '../components/Nav.jsx';
 import Profile from '../components/Profile.jsx';
 import AddPet from '../components/AddPet.jsx';
+import UpdatePet from '../components/UpdatePet.jsx';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   userProfile: state.app.userProfile,
   dashboardPage: state.app.dashboardPage,
   activePet: state.app.activePet,
-  appPage: state.app.appPage,
+  appPage: state.app.appPage
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   changeDBPage: (pageName, activePet) => dispatch(actions.changeDBPage(pageName, activePet)),
-  savePet: (petProfile) => dispatch(actions.savePet(petProfile)),
-  deletePet: (petProfile) => dispatch(actions.deletePet(petProfile)),
-  updatePet: (petProfile) => dispatch(actions.updatePet(petProfile)),
-  logout: (newPage) => dispatch(actions.logout(newPage)),
+  savePet: petProfile => dispatch(actions.savePet(petProfile)),
+  deletePet: petProfile => dispatch(actions.deletePet(petProfile)),
+  updatePet: petProfile => dispatch(actions.updatePet(petProfile)),
+  logout: newPage => dispatch(actions.logout(newPage))
 });
 
 class Dashboard extends Component {
@@ -101,6 +102,7 @@ class Dashboard extends Component {
             savePet={this.props.savePet}
             deletePet={this.props.deletePet}
             ownerID={this.props.userProfile.owner.id}
+            id="Profile"
           />
         );
         break;
@@ -111,6 +113,17 @@ class Dashboard extends Component {
             activePet={this.props.activePet}
             savePet={this.props.savePet}
             ownerID={this.props.userProfile.owner.id}
+          />
+        );
+        break;
+      case 'update':
+        childPage = (
+          <UpdatePet
+            changeDBPage={this.props.changeDBPage}
+            activePet={this.props.activePet}
+            savePet={this.props.savePet}
+            ownerID={this.props.userProfile.owner.id}
+            updatePet={this.props.updatePet}
           />
         );
         break;
@@ -135,5 +148,5 @@ class Dashboard extends Component {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(Dashboard);

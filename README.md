@@ -1,5 +1,5 @@
 # PetChart
-Pet EMR for rich people
+Sophisticated EMR chart for pet owners seeking veterinarian, shelters & more
 
 Front End Explanations
   - fetch requests in stateful components may not be the best way to send/receive data from server

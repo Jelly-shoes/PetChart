@@ -18,7 +18,6 @@ class App extends Component {
   constructor(props) {
     super(props);
   }
-
   render() {
     return (
       <div id="mainContainerWrapper">
@@ -27,5 +26,6 @@ class App extends Component {
     );
   }
 }
+
 
 export default App;

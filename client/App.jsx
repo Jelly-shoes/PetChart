@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 const App = () => (
   <div>
-      Pink Fairy Armadillos, scumbag
+      This is the pet chart
   </div>
 );
 
